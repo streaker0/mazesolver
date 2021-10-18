@@ -1,15 +1,19 @@
 # Name this file to assignment1.py when you submit
+# Group number 24
+# Ayodeji Akinbile
+# Oluwademilade Edward Akapo
+# Jake Jazokas
 import math
 
-
+# Euclidian distance between two nodes
 def distance(node, goal):
     return math.sqrt(pow((goal[0] - node[0]), 2) + pow((goal[1] - node[1]), 2))
 
-
+# Sum of the x and y coordinates for a node
 def compare(node1):
     return node1[1] + node1[2]
 
-
+# Pathfinding algorithm
 def pathfinding(input_filepath):
     # input_filepath contains the full path to a CSV file with the input grid
     file = open(input_filepath, 'r')
@@ -36,7 +40,7 @@ def pathfinding(input_filepath):
 
     frontier = [[start, 0, distance(start, goal)]]
 
-    # optimal_path is a list of tuples indicated the optimal path from start to goal
+    # optimal_path is a list of lits indicating the optimal path from the start to the goal node
     # explored_list is the list of nodes explored during search
     # optimal_path_cost is the cost of the optimal path from the start state to the goal state
 
