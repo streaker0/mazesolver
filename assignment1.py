@@ -6,13 +6,6 @@ def distance(node, goal):
     return math.sqrt(pow((goal[0] - node[0]), 2) + pow((goal[1] - node[1]), 2))
 
 
-# def compare(node1, node2):
-#     if (node1[1] + node1[2]) < (node2[1] + node2[2]):
-#         return 1
-#     elif (node1[1] + node1[2]) > (node2[1] + node2[2]):
-#         return -1
-#     else:
-#         return 0
 def compare(node1):
     return node1[1] + node1[2]
 
@@ -159,14 +152,16 @@ def pathfinding(input_filepath):
                                                                             goal), [row, column]])
                     frontier.sort(key=compare)
 
+#  test code for running
 
-if __name__ == '__main__':
-    data = pathfinding('D:\\Downloads\\Examples\\Examples\\Example3\\input.txt')
-    print("optimal path: ")
-    print(data[0])
-    print()
-    print("explored: ")
-    print(data[1])
-    print()
-    print("path cost")
-    print(data[2])
+#
+# if __name__ == '__main__':
+#     data = pathfinding('D:\\Downloads\\Examples\\Examples\\Example3\\input.txt')
+#     print("optimal path: ")
+#     print(data[0])
+#     print()
+#     print("explored: ")
+#     print(data[1])
+#     print()
+#     print("path cost")
+#     print(data[2])
