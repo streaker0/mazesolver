@@ -55,21 +55,27 @@ def pathfinding(input_filepath):
     def danger(node):
         x = node[0]  # row of the hazard node
         y = node[1]  # column of the hazard node
-
-        hazard.append([x, y])  # add hazard node to hazard list
+        if not [x, y] in hazard:
+            hazard.append([x, y])  # add hazard node to hazard list
         if x - 1 >= 0:
-            hazard.append([x - 1, y])  # add the top hazard node to hazard list
+            if not [x - 1, y] in hazard:
+                hazard.append([x - 1, y])  # add the top hazard node to hazard list
         if x + 1 < len(maze):
-            hazard.append([x + 1, y])  # add the bottom hazard node to hazard list
+            if not [x + 1, y] in hazard:
+                hazard.append([x + 1, y])  # add the bottom hazard node to hazard list
         if y - 1 >= 0:
-            hazard.append([x, y - 1])  # add the left hazard node to hazard list
+            if not [x, y - 1] in hazard:
+                hazard.append([x, y - 1])  # add the left hazard node to hazard list
         if y + 1 < len(maze[0]):
-            hazard.append([x, y + 1])  # add the right hazard node to hazard list
+            if not [x, y + 1] in hazard:
+                hazard.append([x, y + 1])  # add the right hazard node to hazard list
 
     while frontier:
-        # print(frontier)
         current = frontier.pop(0)
-        explored.append(current)
+        if current in explored:
+            pass
+        else:
+            explored.append(current)
         if current[0] == goal:
             optimal_path.append(current[0])
             state = current[0]
@@ -82,7 +88,10 @@ def pathfinding(input_filepath):
                 total_explored = total_explored - 1
             optimal_path.reverse()
             for path in explored:
-                explored_list.append(path[0])
+                if path[0] in explored_list:
+                    pass
+                else:
+                    explored_list.append(path[0])
             optimal_path_cost = current[1]
             return optimal_path, explored_list, optimal_path_cost
         else:
@@ -93,8 +102,6 @@ def pathfinding(input_filepath):
             left = column - 1
             right = column + 1
             if up >= 0:
-                #  if maze[up][row] == 'X' or hazard.count([up, column]) > 0:
-
                 if (up - 1) >= 0 and maze[up - 1][column] == 'H':
                     danger([up - 1, column])
                 if left >= 0 and maze[up][left] == 'H':
@@ -103,20 +110,21 @@ def pathfinding(input_filepath):
                     danger([up, right])
                 if not (hazard.count([up, column]) > 0) and not maze[up][column] == 'X' and not (
                         frontier.count([[up, column],
-                                        current[1] + 1, distance([up, column], goal)]) > 0):
+                                        current[1] + 1, distance([up, column], goal)]) in frontier):
                     frontier.append([[up, column],
                                      current[1] + 1, distance([up, column], goal), [row, column]])
                     frontier.sort(key=compare)
             if down < len(maze):
                 if (down + 1) < len(maze) and maze[down + 1][column] == 'H':
                     danger([down + 1, column])
-                if left >= 0 and maze[up][left] == 'H':
+                if left >= 0 and maze[down][left] == 'H':
                     danger([down, left])
-                if right < len(maze[0]) and maze[up][right] == 'H':
+                if right < len(maze[0]) and maze[down][right] == 'H':
                     danger([down, right])
-                if not (hazard.count([down, column])  > 0) and not maze[down][column] == 'X' \
-                        and not (frontier.count([[down, column], current[1] + 1, distance([down,
-                                                                                           column], goal)]) > 0):
+                if not (([down, column]) in hazard) and not maze[down][column] == 'X' \
+                        and not ([[down, column], current[1] + 1, distance([down,
+                                                                                           column],
+                                                                                          goal)] in frontier):
                     frontier.append([[down, column], current[1] + 1, distance([down,
                                                                                column], goal), [row, column]])
                 frontier.sort(key=compare)
@@ -127,37 +135,33 @@ def pathfinding(input_filepath):
                     danger([up, left])
                 if down < len(maze) and maze[down][left] == 'H':
                     danger([down, left])
-                if not (hazard.count([row, left]) > 0) and not maze[row][left] == 'X' \
-                        and not (frontier.count([[row, left], current[1] + 1, distance([row,
+                if not ([row, left] in hazard) and not maze[row][left] == 'X' \
+                        and not ([[row, left], current[1] + 1, distance([row,
                                                                                         left],
-                                                                                       goal)]) > 0):
+                                                                                       goal)] in frontier):
                     frontier.append([[row, left], current[1] + 1, distance([row,
                                                                             left],
                                                                            goal), [row, column]])
                     frontier.sort(key=compare)
-            if right < len(maze[0]) and not (frontier.count(current) > 0):
+            if right < len(maze[0]):
                 if (right + 1) < len(maze[0]) and maze[row][right + 1] == 'H':
                     danger([row, right + 1])
                 if up >= 0 and maze[up][right] == 'H':
                     danger([up, right])
                 if down < len(maze) and maze[down][right] == 'H':
                     danger([down, right])
-                if not (hazard.count([row, right]) > 0) and not maze[row][right] == 'X' \
-                        and not (frontier.count([[row, right], current[1] + 1, distance([row,
-                                                                                         right],
-                                                                                        goal)]) > 0):
+                if not ([row, right] in hazard) and not maze[row][right] == 'X' \
+                        and not ([[row, right], current[1] + 1, distance([row,
+                                                                           right],
+                                                                          goal)] in frontier):
                     frontier.append([[row, right], current[1] + 1, distance([row,
                                                                              right],
                                                                             goal), [row, column]])
                     frontier.sort(key=compare)
 
 
-
-
-
-
 if __name__ == '__main__':
-    data = pathfinding('D:\\Downloads\\Examples\\Examples\\Example1\\input.txt')
+    data = pathfinding('D:\\Downloads\\Examples\\Examples\\Example3\\input.txt')
     print("optimal path: ")
     print(data[0])
     print()
